@@ -1,0 +1,51 @@
+{% extends 'blog/base.html' %}
+{% block content %}
+        <br>
+        <br>
+        <article class="media content-section">
+            <img class="rounded-cirlce article-img" src="{{ object.author.profile.image.url }}" alt="">
+            <div class="media-body">
+              <div class="article-metadata">
+                <a class="mr-2" href="#">{{ object.author }}</a>
+                <small class="text-muted">{{ object.date_posted }}</small> <br>
+                  {% if object.author == user %}
+
+                    <div>
+                        <a class="btn btn-outline-success" href="{% url 'blog-update' object.id %}">Update</a>
+                        <a class="btn btn-outline-danger" href="{% url 'blog-delete' object.id %}">Delete</a>
+                    </div>
+                  {% endif %}
+              </div>
+              <br>  
+              <br>  
+              <h2><a class="article-title" href="#">{{ object.title }}</a></h2>
+              <p class="article-content">{{object.intro}}</p>
+              <p class="article-content">{{ object.content }}</p>
+              <br>
+              <br>
+              <h2>Comments...</h2>
+            
+              {% if not object.comments.all %}
+                No comments Yet... <a href = "{% url 'add_comment' object.pk %}">
+                  Add One</a>
+              {% else %}
+              <a href="{% url 'add_comment' object.pk %}">Add Comments</a>
+              <br>
+              <br>
+                  {% for comment in object.comments.all %}
+                 
+                    <strong>
+                      {{ comment.name }} -
+                      {{ comment.date_added }}
+                    </strong>
+                    <br/>
+                    {{ comment.body }}
+                    <br><br>
+                  {% endfor %}
+              {% endif %}
+            </div>
+            <br>
+
+            
+          </article>
+{% endblock content %}
